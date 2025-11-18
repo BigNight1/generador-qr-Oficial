@@ -1,0 +1,23 @@
+{
+  "name": "generador-qr-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon api/index.js",
+    "dev": "nodemon api/index.js",
+    "vercel-build": "echo 'Build completado'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "nodemon": "^3.1.11",
+    "qrcode": "^1.5.3",
+    "sharp": "^0.34.5"
+  },
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
+}
