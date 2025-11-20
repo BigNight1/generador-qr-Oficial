@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Code2, Shield, Zap, Github, Linkedin } from "lucide-react";
+import { Code2, Shield, Zap, Github, Linkedin, Facebook, FacebookIcon } from "lucide-react";
 
 export const Footer = () => {
   const { t } = useTranslation();
@@ -62,6 +62,16 @@ export const Footer = () => {
                 >
                   <Linkedin className="h-5 w-5" />
                 </a>
+                <a
+                  href="https://www.facebook.com/profile.php?id=61558087662014"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  aria-label="Facebook BigNight"
+                >
+                  <FacebookIcon className="h-5 w-5" />
+                </a>
+                
               </div>
             </div>
           </div>
