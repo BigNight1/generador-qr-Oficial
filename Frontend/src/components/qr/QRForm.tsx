@@ -249,7 +249,7 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
           </label>
           <select
             value={outputFormat}
-            onChange={(e) => setOutputFormat(e.target.value as "jpg" | "png" | "pdf")}
+            onChange={(e) => setOutputFormat(e.target.value as "jpg" | "png" | "pdf" | "svg")}
             className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 sm:p-2.5 text-sm sm:text-base border"
             style={{
               isolation: "isolate",
@@ -259,6 +259,7 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
             <option value="jpg">JPG</option>
             <option value="png">PNG</option>
             <option value="pdf">PDF</option>
+            <option value="svg">SVG</option>
           </select>
         </div>
 

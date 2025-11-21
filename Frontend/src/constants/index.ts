@@ -21,9 +21,10 @@ export const STORAGE_KEYS = {
 
 export const SUPPORTED_LANGUAGES = ["es", "en", "pt"] as const;
 
-export const OUTPUT_FORMATS: Array<{ value: "jpg" | "png" | "pdf"; label: string }> = [
+export const OUTPUT_FORMATS: Array<{ value: "jpg" | "png" | "pdf" | "svg"; label: string }> = [
   { value: "jpg", label: "JPG" },
   { value: "png", label: "PNG" },
   { value: "pdf", label: "PDF" },
+  { value: "svg", label: "SVG" },
 ] as const;
 

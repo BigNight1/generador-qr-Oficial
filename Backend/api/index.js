@@ -24,6 +24,73 @@ app.get('/api', (req, res) => {
   res.json({ message: 'API QR funcionando' });
 });
 
+const addLogoToSVG = async (svgString, logoDataURL, qrSize) => {
+  const logoBuffer = Buffer.from(logoDataURL.split(',')[1], 'base64');
+  
+  const logoMetadata = await sharp(logoBuffer).metadata();
+  const logoWidth = logoMetadata.width;
+  const logoHeight = logoMetadata.height;
+  
+  const maxLogoSize = Math.floor(qrSize * 0.25);
+  const padding = Math.floor(qrSize * 0.02);
+  
+  let newLogoWidth = maxLogoSize;
+  let newLogoHeight = maxLogoSize;
+  
+  if (logoWidth > logoHeight) {
+    newLogoHeight = Math.floor((maxLogoSize * logoHeight) / logoWidth);
+  } else if (logoHeight > logoWidth) {
+    newLogoWidth = Math.floor((maxLogoSize * logoWidth) / logoHeight);
+  }
+  
+  // Redimensionar logo y convertirlo a base64
+  const resizedLogo = await sharp(logoBuffer)
+    .resize(newLogoWidth, newLogoHeight, {
+      fit: 'contain',
+      background: { r: 255, g: 255, b: 255, alpha: 0 }
+    })
+    .png()
+    .toBuffer();
+  
+  const logoBase64 = resizedLogo.toString('base64');
+  const logoDataUri = `data:image/png;base64,${logoBase64}`;
+  
+  // Crear fondo blanco para el logo
+  const backgroundWidth = newLogoWidth + (padding * 2);
+  const backgroundHeight = newLogoHeight + (padding * 2);
+  
+  const whiteBackground = await sharp({
+    create: {
+      width: backgroundWidth,
+      height: backgroundHeight,
+      channels: 4,
+      background: { r: 255, g: 255, b: 255, alpha: 1 }
+    }
+  })
+    .composite([{
+      input: resizedLogo,
+      top: padding,
+      left: padding
+    }])
+    .png()
+    .toBuffer();
+  
+  const backgroundBase64 = whiteBackground.toString('base64');
+  const backgroundDataUri = `data:image/png;base64,${backgroundBase64}`;
+  
+  // Calcular posición del logo en el centro del QR
+  const logoX = (qrSize - backgroundWidth) / 2;
+  const logoY = (qrSize - backgroundHeight) / 2;
+  
+  // Insertar el logo en el SVG
+  const logoImageTag = `<image href="${backgroundDataUri}" x="${logoX}" y="${logoY}" width="${backgroundWidth}" height="${backgroundHeight}"/>`;
+  
+  // Insertar antes del cierre del tag <svg>
+  const svgWithLogo = svgString.replace('</svg>', `${logoImageTag}</svg>`);
+  
+  return svgWithLogo;
+};
+
 const addLogoToQR = async (qrDataURL, logoDataURL, qrSize, format = 'png') => {
   const qrBuffer = Buffer.from(qrDataURL.split(',')[1], 'base64');
   const logoBuffer = Buffer.from(logoDataURL.split(',')[1], 'base64');
@@ -123,38 +190,72 @@ const generateQRHandler = async (req, res) => {
   }
 
   try {
-    const qrCodeImage = await QRCode.toDataURL(url, {
-      width: size,
-      height: size,
-      margin: 1,
-      errorCorrectionLevel: 'H',
-      type: 'image/png',
-      color: {
-        dark: color,
-        light: '#FFFFFF'
-      }
-    });
+    let finalQRImage;
     
-    let finalQRImage = qrCodeImage;
-    
-    if (logo) {
-      try {
-        finalQRImage = await addLogoToQR(qrCodeImage, logo, size, format);
-      } catch (logoError) {
-        console.error("Error procesando logo:", logoError);
-        return res.json({ 
-          qrCode: qrCodeImage, 
-          size: size,
-          warning: "No se pudo agregar el logo, se generó el QR sin logo"
-        });
+    // Si el formato es SVG, generar directamente como SVG
+    if (format === 'svg') {
+      const svgString = await QRCode.toString(url, {
+        type: 'svg',
+        width: size,
+        margin: 1,
+        errorCorrectionLevel: 'H',
+        color: {
+          dark: color,
+          light: '#FFFFFF'
+        }
+      });
+      
+      if (logo) {
+        try {
+          const svgWithLogo = await addLogoToSVG(svgString, logo, size);
+          finalQRImage = `data:image/svg+xml;base64,${Buffer.from(svgWithLogo).toString('base64')}`;
+        } catch (logoError) {
+          console.error("Error procesando logo en SVG:", logoError);
+          finalQRImage = `data:image/svg+xml;base64,${Buffer.from(svgString).toString('base64')}`;
+          return res.json({ 
+            qrCode: finalQRImage, 
+            size: size,
+            warning: "No se pudo agregar el logo, se generó el QR sin logo"
+          });
+        }
+      } else {
+        finalQRImage = `data:image/svg+xml;base64,${Buffer.from(svgString).toString('base64')}`;
       }
     } else {
-      if (format === 'jpg' || format === 'jpeg') {
-        const qrBuffer = Buffer.from(qrCodeImage.split(',')[1], 'base64');
-        const jpgBuffer = await sharp(qrBuffer).jpeg({ quality: 90 }).toBuffer();
-        finalQRImage = `data:image/jpeg;base64,${jpgBuffer.toString('base64')}`;
-      } else if (format === 'pdf') {
-        finalQRImage = qrCodeImage;
+      // Para otros formatos (PNG, JPG, PDF), usar el método anterior
+      const qrCodeImage = await QRCode.toDataURL(url, {
+        width: size,
+        height: size,
+        margin: 1,
+        errorCorrectionLevel: 'H',
+        type: 'image/png',
+        color: {
+          dark: color,
+          light: '#FFFFFF'
+        }
+      });
+      
+      finalQRImage = qrCodeImage;
+      
+      if (logo) {
+        try {
+          finalQRImage = await addLogoToQR(qrCodeImage, logo, size, format);
+        } catch (logoError) {
+          console.error("Error procesando logo:", logoError);
+          return res.json({ 
+            qrCode: qrCodeImage, 
+            size: size,
+            warning: "No se pudo agregar el logo, se generó el QR sin logo"
+          });
+        }
+      } else {
+        if (format === 'jpg' || format === 'jpeg') {
+          const qrBuffer = Buffer.from(qrCodeImage.split(',')[1], 'base64');
+          const jpgBuffer = await sharp(qrBuffer).jpeg({ quality: 90 }).toBuffer();
+          finalQRImage = `data:image/jpeg;base64,${jpgBuffer.toString('base64')}`;
+        } else if (format === 'pdf') {
+          finalQRImage = qrCodeImage;
+        }
       }
     }
     
@@ -177,5 +278,4 @@ app.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto ${PORT}`);
 });
 
-// Vercel necesita que exportemos la configuración de express
 export default app; 

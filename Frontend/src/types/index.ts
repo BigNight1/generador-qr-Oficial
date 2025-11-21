@@ -1,5 +1,5 @@
 export type QRType = "url" | "whatsapp";
-export type OutputFormat = "jpg" | "png" | "pdf";
+export type OutputFormat = "jpg" | "png" | "pdf" | "svg";
 export type Language = "es" | "en" | "pt";
 
 export interface QRFormData {

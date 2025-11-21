@@ -94,7 +94,7 @@ export const downloadAsPDF = async (imageUrl: string, filename: string): Promise
  * Descarga una imagen desde una URL base64
  * @param imageUrl - URL base64 de la imagen
  * @param filename - Nombre del archivo
- * @param extension - Extensión del archivo (jpg, png, pdf)
+ * @param extension - Extensión del archivo (jpg, png, pdf, svg)
  */
 export const downloadImage = async (
   imageUrl: string,
@@ -103,6 +103,36 @@ export const downloadImage = async (
 ): Promise<void> => {
   if (extension === "pdf") {
     await downloadAsPDF(imageUrl, filename);
+    return;
+  }
+
+  if (extension === "svg") {
+    // Para SVG, decodificar el base64 y crear un blob
+    try {
+      // Extraer el base64 del data URI
+      const base64Match = imageUrl.match(/base64,(.+)$/);
+      if (!base64Match) {
+        throw new Error("Formato de imagen SVG inválido");
+      }
+      
+      const base64Data = base64Match[1];
+      const svgString = atob(base64Data);
+      const blob = new Blob([svgString], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${filename}.svg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      
+      // Limpiar el URL del blob
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error al descargar SVG:", error);
+      throw new Error("No se pudo descargar el archivo SVG");
+    }
     return;
   }
 
