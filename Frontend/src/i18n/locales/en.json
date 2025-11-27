@@ -1,11 +1,15 @@
 {
   "header": {
     "title": "QR Generator",
-    "login": "Sign in"
+    "login": "Sign in",
+    "history": "History",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "language": "Language"
   },
   "main": {
     "title": "QR Code Generator",
-    "subtitle": "Generate QR codes for URLs, WhatsApp or WiFi"
+    "subtitle": "Generate QR codes for URLs, WhatsApp, WiFi and Text"
   },
   "form": {
     "urlLabel": "Page URL",
@@ -22,6 +26,10 @@
     "wifiHidden": "Hidden network",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
+    "text": "Text",
+    "textLabel": "Plain text",
+    "textPlaceholder": "Write any text you want to encode in the QR...",
+    "textHint": "Any text will be encoded exactly as you write it",
     "sizeLabel": "QR Code Size",
     "lowQuality": "Low quality",
     "highQuality": "High quality",
@@ -37,8 +45,11 @@
   },
   "qr": {
     "title": "Generated QR Code",
+    "subtitle": "Your code is ready to use",
     "size": "Size",
+    "format": "Format",
     "download": "Download QR",
+    "tip": "💡 Scan this code with any QR reader to verify it works correctly",
     "placeholder": "QR Code",
     "placeholderText": "Will appear here",
     "instructions": "Configure the options and press \"Generate QR\""
@@ -106,11 +117,31 @@
     "logoRequired": "Please select a logo to add to the QR",
     "urlRequired": "Please enter a URL",
     "wifiSSIDRequired": "Please enter the WiFi network name",
+    "textRequired": "Please enter some text",
     "generateError": "There was a problem generating the QR code",
     "genericError": "Error"
   },
   "alerts": {
     "comingSoon": "Coming soon"
+  },
+  "history": {
+    "title": "QR Code History",
+    "subtitle": "{{count}} code(s) generated",
+    "empty": "You haven't generated any QR codes yet",
+    "back": "Back",
+    "clear": "Clear history",
+    "confirmClear": "Are you sure you want to delete all history?",
+    "url": "URL",
+    "copy": "Copy",
+    "copyUrl": "Copy URL",
+    "copied": "Copied",
+    "copyError": "Error copying the URL",
+    "format": "Format",
+    "size": "Size",
+    "sizeUnknown": "Unknown",
+    "date": "Date",
+    "download": "Download",
+    "downloadError": "Error downloading the QR code"
   }
 }
 

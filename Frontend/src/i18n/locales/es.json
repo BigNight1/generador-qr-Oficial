@@ -1,11 +1,15 @@
 {
   "header": {
     "title": "Generador QR",
-    "login": "Iniciar sesión"
+    "login": "Iniciar sesión",
+    "history": "Historial",
+    "lightMode": "Modo Claro",
+    "darkMode": "Modo Oscuro",
+    "language": "Idioma"
   },
   "main": {
     "title": "Generador de Código QR",
-    "subtitle": "Genera códigos QR para URLs, WhatsApp o WiFi"
+    "subtitle": "Genera códigos QR para URLs, WhatsApp, WiFi y Texto"
   },
   "form": {
     "urlLabel": "URL de la página",
@@ -22,6 +26,10 @@
     "wifiHidden": "Red oculta",
     "showPassword": "Mostrar contraseña",
     "hidePassword": "Ocultar contraseña",
+    "text": "Texto",
+    "textLabel": "Texto plano",
+    "textPlaceholder": "Escribe cualquier texto que quieras codificar en el QR...",
+    "textHint": "Cualquier texto será codificado tal como lo escribas",
     "sizeLabel": "Tamaño del código QR",
     "lowQuality": "Baja calidad",
     "highQuality": "Alta calidad",
@@ -37,8 +45,11 @@
   },
   "qr": {
     "title": "Código QR Generado",
+    "subtitle": "Tu código está listo para usar",
     "size": "Tamaño",
+    "format": "Formato",
     "download": "Descargar QR",
+    "tip": "💡 Escanea este código con cualquier lector QR para verificar que funciona correctamente",
     "placeholder": "Código QR",
     "placeholderText": "Aparecerá aquí",
     "instructions": "Configura las opciones y presiona \"Generar QR\""
@@ -106,11 +117,31 @@
     "logoRequired": "Por favor, selecciona un logo para agregar al QR",
     "urlRequired": "Por favor, ingresa una URL",
     "wifiSSIDRequired": "Por favor, ingresa el nombre de la red WiFi",
+    "textRequired": "Por favor, ingresa un texto",
     "generateError": "Hubo un problema al generar el código QR",
     "genericError": "Error"
   },
   "alerts": {
     "comingSoon": "Muy pronto"
+  },
+  "history": {
+    "title": "Historial de Códigos QR",
+    "subtitle": "{{count}} código(s) generado(s)",
+    "empty": "Todavía no generaste ningún código QR",
+    "back": "Volver",
+    "clear": "Limpiar historial",
+    "confirmClear": "¿Estás seguro de que quieres eliminar todo el historial?",
+    "url": "URL",
+    "copy": "Copiar",
+    "copyUrl": "Copiar URL",
+    "copied": "Copiado",
+    "copyError": "Error al copiar la URL",
+    "format": "Formato",
+    "size": "Tamaño",
+    "sizeUnknown": "Desconocido",
+    "date": "Fecha",
+    "download": "Descargar",
+    "downloadError": "Error al descargar el código QR"
   }
 }
 

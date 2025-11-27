@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { Link, MessageCircle, Image as ImageIcon, Wifi, Eye, EyeOff } from "lucide-react";
+import { Link, MessageCircle, Image as ImageIcon, Wifi, Eye, EyeOff, FileText } from "lucide-react";
 import { QR_CONFIG } from "../../constants";
 import type { UseQRGeneratorReturn } from "../../hooks/useQRGenerator";
 import type { WiFiSecurity } from "../../types";
@@ -25,6 +25,8 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
     setWifiSecurity,
     wifiHidden,
     setWifiHidden,
+    textContent,
+    setTextContent,
     type,
     setType,
     qrSize,
@@ -45,7 +47,7 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
     <div className="bg-white dark:bg-gray-800 p-4 sm:p-5 lg:p-6 rounded-lg shadow-md transition-colors">
       <div className="space-y-4">
         {/* Tipo de QR */}
-        <div className="flex gap-2 sm:gap-4 mb-4">
+        <div className="flex flex-wrap gap-2 sm:gap-4 mb-4">
           <button
             onClick={() => setType("url")}
             className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-md text-sm sm:text-base flex-1 sm:flex-none justify-center ${
@@ -79,10 +81,42 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
             <Wifi className="h-4 w-4 sm:h-5 sm:w-5" />
             <span>WiFi</span>
           </button>
+          <button
+            onClick={() => setType("text")}
+            className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-md text-sm sm:text-base flex-1 sm:flex-none justify-center ${
+              type === "text"
+                ? "bg-orange-600 text-white"
+                : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+            }`}
+          >
+            <FileText className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span>{t("form.text")}</span>
+          </button>
         </div>
 
         {/* Campos según el tipo */}
-        {type === "wifi" ? (
+        {type === "text" ? (
+          <>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {t("form.textLabel")}
+              </label>
+              <div className="relative">
+                <FileText className="absolute left-3 top-3 text-gray-400 dark:text-gray-500 h-4 w-4 sm:h-5 sm:w-5 z-10 pointer-events-none" />
+                <textarea
+                  value={textContent}
+                  onChange={(e) => setTextContent(e.target.value)}
+                  placeholder={t("form.textPlaceholder")}
+                  className="pl-9 sm:pl-10 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 sm:p-2.5 text-sm sm:text-base border"
+                  rows={4}
+                />
+              </div>
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                {t("form.textHint")}
+              </p>
+            </div>
+          </>
+        ) : type === "wifi" ? (
           <>
             <div className="space-y-4">
               <div>
@@ -376,7 +410,9 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
                 ? "bg-blue-600 hover:bg-blue-700"
                 : type === "whatsapp"
                 ? "bg-green-600 hover:bg-green-700"
-                : "bg-purple-600 hover:bg-purple-700"
+                : type === "wifi"
+                ? "bg-purple-600 hover:bg-purple-700"
+                : "bg-orange-600 hover:bg-orange-700"
             } text-white rounded-md transition-colors disabled:cursor-not-allowed`}
           >
             {loading ? t("form.generating") : t("form.generateButton")}

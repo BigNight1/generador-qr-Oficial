@@ -5,6 +5,7 @@ import { QR_CONFIG } from "../constants";
 import { QRService } from "../services/qrService";
 import { fileToBase64, isValidImageFile, isValidFileSize } from "../utils/fileUtils";
 import { generateFinalUrl, downloadImage } from "../utils/qrUtils";
+import { saveQRToHistory } from "../utils/historyUtils";
 
 export interface UseQRGeneratorReturn {
   // Form state
@@ -20,6 +21,8 @@ export interface UseQRGeneratorReturn {
   setWifiSecurity: (security: WiFiSecurity) => void;
   wifiHidden: boolean;
   setWifiHidden: (hidden: boolean) => void;
+  textContent: string;
+  setTextContent: (text: string) => void;
   type: QRType;
   setType: (type: QRType) => void;
   qrSize: number;
@@ -54,6 +57,7 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
   const [wifiPassword, setWifiPassword] = useState<string>("");
   const [wifiSecurity, setWifiSecurity] = useState<WiFiSecurity>("WPA");
   const [wifiHidden, setWifiHidden] = useState<boolean>(false);
+  const [textContent, setTextContent] = useState<string>("");
   const [type, setType] = useState<QRType>("url");
   const [qrSize, setQrSize] = useState<number>(QR_CONFIG.DEFAULT_SIZE);
   const [enableLogo, setEnableLogo] = useState<boolean>(false);
@@ -90,6 +94,11 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
         alert(t("errors.wifiSSIDRequired"));
         return;
       }
+    } else if (type === "text") {
+      if (!textContent.trim()) {
+        alert(t("errors.textRequired"));
+        return;
+      }
     } else {
       if (!url) {
         alert(t("errors.urlRequired"));
@@ -116,7 +125,8 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
               security: wifiSecurity,
               hidden: wifiHidden,
             }
-          : undefined
+          : undefined,
+        type === "text" ? textContent : undefined
       );
       let logoBase64 = null;
 
@@ -133,7 +143,12 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
       });
 
       setQrCodeImage(response.qrCode);
-      setSelectedSize(response.size ?? qrSize);
+      const finalSize = response.size ?? qrSize;
+      setSelectedSize(finalSize);
+      
+      // Guardar en el historial
+      saveQRToHistory(response.qrCode, finalUrl, outputFormat, finalSize);
+      
       if (response.warning) {
         alert(response.warning);
       }
@@ -168,6 +183,8 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
     setWifiSecurity,
     wifiHidden,
     setWifiHidden,
+    textContent,
+    setTextContent,
     type,
     setType,
     qrSize,

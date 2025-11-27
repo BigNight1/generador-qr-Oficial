@@ -52,11 +52,12 @@ export const generateWiFiString = (
 
 /**
  * Genera la URL final según el tipo
- * @param type - Tipo de QR (url, whatsapp o wifi)
+ * @param type - Tipo de QR (url, whatsapp, wifi o text)
  * @param url - URL o número de teléfono
  * @param message - Mensaje para WhatsApp (opcional)
  * @param wifiData - Datos de WiFi (opcional)
- * @returns URL final o string de WiFi
+ * @param textContent - Contenido de texto plano (opcional)
+ * @returns URL final o string según el tipo
  */
 export const generateFinalUrl = (
   type: QRType,
@@ -67,7 +68,8 @@ export const generateFinalUrl = (
     password: string;
     security: WiFiSecurity;
     hidden: boolean;
-  }
+  },
+  textContent?: string
 ): string => {
   if (type === "whatsapp") {
     return generateWhatsAppUrl(url, message);
@@ -79,6 +81,9 @@ export const generateFinalUrl = (
       wifiData.security,
       wifiData.hidden
     );
+  }
+  if (type === "text" && textContent) {
+    return textContent;
   }
   return url;
 };
