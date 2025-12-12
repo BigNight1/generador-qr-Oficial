@@ -201,7 +201,7 @@
       },
       "section4": {
         "title": "4. Third-Party Services",
-        "content": "We use Google AdSense to display ads. Google may use cookies to personalize ads based on your interests. You can manage your cookie preferences through your browser settings."
+        "content": "We use third-party advertising services to display ads. These services may use cookies to personalize ads based on your interests. You can manage your cookie preferences through your browser settings."
       },
       "section5": {
         "title": "5. Security",
@@ -225,7 +225,7 @@
       },
       "section2": {
         "title": "2. Cookies We Use",
-        "content": "We use essential technical cookies for the site's functionality, such as storing your preferred language and dark/light mode. We also use Google AdSense cookies to display relevant ads."
+        "content": "We use essential technical cookies for the site's functionality, such as storing your preferred language and dark/light mode. We also use third-party advertising service cookies to display relevant ads."
       },
       "section3": {
         "title": "3. Cookie Management",
@@ -233,7 +233,7 @@
       },
       "section4": {
         "title": "4. Third-Party Cookies",
-        "content": "Google AdSense uses cookies to personalize ads. You can learn more about how Google uses cookies by visiting Google's Privacy Policy."
+        "content": "Third-party advertising services use cookies to personalize ads. You can learn more about how these services use cookies by consulting their respective privacy policies."
       },
       "section5": {
         "title": "5. Contact",
