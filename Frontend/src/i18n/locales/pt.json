@@ -52,7 +52,9 @@
     "tip": "💡 Escaneie este código com qualquer leitor QR para verificar se funciona corretamente",
     "placeholder": "Código QR",
     "placeholderText": "Aparecerá aqui",
-    "instructions": "Configure as opções e pressione \"Gerar QR\""
+    "instructions": "Configure as opções e pressione \"Gerar QR\"",
+    "supportCta": "Te ajudou? Me apoie",
+    "viewDonations": "Ver opções de doação"
   },
   "sections": {
     "whatIsQR": {
@@ -114,6 +116,7 @@
     "unlimited": "Sem limites de uso",
     "madeBy": "Feito por",
     "about": "Sobre",
+    "donations": "Doações",
     "faq": "Perguntas Frequentes",
     "terms": "Termos e Condições",
     "privacy": "Política de Privacidade",
@@ -288,6 +291,32 @@
       "title": "Código Aberto",
       "content": "Este projeto é de código aberto e está disponível no GitHub. Acreditamos na transparência e no poder da colaboração. Se você é desenvolvedor e quer contribuir, melhorar ou adaptar o código, é bem-vindo a fazê-lo."
     }
+  },
+  "donations": {
+    "title": "Apoie este projeto",
+    "subtitle": "Gerador QR grátis e sem anúncios",
+    "notRequired": "Não é necessário doar. Já me apoiam muito usando o app e compartilhando para que outras pessoas usem e aproveitem. Se ainda assim quiser apoiar com uma doação, aqui estão as opções.",
+    "greeting": "Olá, sou o Edu.",
+    "role": "Programador Full Stack",
+    "message": "Este gerador de códigos QR é grátis e sem anúncios. Se te ajudou, você pode apoiar o projeto com uma doação voluntária. Se não pode ou não quer doar, sem problema: você já me apoia usando o app e compartilhando com quem possa aproveitar.",
+    "otherAmount": "Outro valor",
+    "methodsTitle": "Métodos de doação",
+    "yapeNumber": "Número Yape (copiar)",
+    "yapePlaceholder": "965 728 013",
+    "plinNumber": "Número Plin (copiar)",
+    "plinPlaceholder": "965 728 013",
+    "paypalLink": "https://paypal.me/EduArmas?locale.x=es_XC&country.x=PE",
+    "paypalCta": "Doar com PayPal",
+    "binanceWallet": "Carteira USDT (BEP20 ou rede preferida)",
+    "binancePlaceholder": "0x...",
+    "binancePayHint": "Escaneie o QR com Binance Pay para doar",
+    "binancePayIdLabel": "Se não puder escanear, use meu ID:",
+    "transparencyTitle": "Para que serve seu apoio?",
+    "transparency1": "Domínio e hospedagem para manter o app online",
+    "transparency2": "Melhorias e novas funções",
+    "transparency3": "Manter o projeto sem anúncios nem paywall",
+    "thanks": "Obrigado por apoiar e testar o app; espero que possa compartilhá-lo com quem possa aproveitar.",
+    "backToGenerator": "Voltar ao gerador"
   }
 }
 

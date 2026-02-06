@@ -49,6 +49,12 @@ export const Footer = () => {
             {t("footer.about")}
           </Link>
           <Link
+            to="/donaciones"
+            className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          >
+            {t("footer.donations")}
+          </Link>
+          <Link
             to="/faq"
             className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >

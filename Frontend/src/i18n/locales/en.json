@@ -52,7 +52,9 @@
     "tip": "💡 Scan this code with any QR reader to verify it works correctly",
     "placeholder": "QR Code",
     "placeholderText": "Will appear here",
-    "instructions": "Configure the options and press \"Generate QR\""
+    "instructions": "Configure the options and press \"Generate QR\"",
+    "supportCta": "Did it help? Support me",
+    "viewDonations": "View donation options"
   },
   "sections": {
     "whatIsQR": {
@@ -114,6 +116,7 @@
     "unlimited": "Unlimited use",
     "madeBy": "Made by",
     "about": "About",
+    "donations": "Donations",
     "faq": "FAQ",
     "terms": "Terms and Conditions",
     "privacy": "Privacy Policy",
@@ -288,6 +291,32 @@
       "title": "Open Source",
       "content": "This project is open source and available on GitHub. We believe in transparency and the power of collaboration. If you're a developer and want to contribute, improve, or adapt the code, you're welcome to do so."
     }
+  },
+  "donations": {
+    "title": "Support this project",
+    "subtitle": "Free QR generator, no ads",
+    "notRequired": "You don't need to donate. You already support me a lot by using the app and sharing it so others can use it and find it helpful. If you still want to support with a donation, here are the options.",
+    "greeting": "Hi, I'm Edu.",
+    "role": "Full Stack Developer",
+    "message": "This QR code generator is free and ad-free. If it helped you, you can support the project with a voluntary donation. If you can't or don't want to donate, no problem: you still support me by using the app and sharing it with anyone who might find it useful.",
+    "otherAmount": "Other amount",
+    "methodsTitle": "Donation methods",
+    "yapeNumber": "Yape number (copy)",
+    "yapePlaceholder": "965 728 013",
+    "plinNumber": "Plin number (copy)",
+    "plinPlaceholder": "965 728 013",
+    "paypalLink": "https://paypal.me/EduArmas?locale.x=es_XC&country.x=PE",
+    "paypalCta": "Donate with PayPal",
+    "binanceWallet": "USDT wallet (BEP20 or preferred network)",
+    "binancePlaceholder": "0x...",
+    "binancePayHint": "Scan the QR with Binance Pay to donate",
+    "binancePayIdLabel": "If you can't scan, use my ID:",
+    "transparencyTitle": "What is your support used for?",
+    "transparency1": "Domain and hosting to keep the app online",
+    "transparency2": "Improvements and new features",
+    "transparency3": "Keeping the project ad-free and without paywall",
+    "thanks": "Thanks for supporting and trying the app — I hope you can share it with whoever might find it useful.",
+    "backToGenerator": "Back to generator"
   }
 }
 

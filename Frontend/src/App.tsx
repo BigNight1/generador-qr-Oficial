@@ -15,6 +15,7 @@ import { Privacy } from "./pages/Privacy";
 import { Cookies } from "./pages/Cookies";
 import { FAQ } from "./pages/FAQ";
 import { About } from "./pages/About";
+import { Donations } from "./pages/Donations";
 import { useQRGenerator } from "./hooks/useQRGenerator";
 
 function Home() {
@@ -69,6 +70,7 @@ function App() {
         <Route path="/cookies" element={<Cookies />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/about" element={<About />} />
+        <Route path="/donaciones" element={<Donations />} />
       </Routes>
 
       <ComingSoonModal isOpen={showComingSoonModal} onClose={() => setShowComingSoonModal(false)} />

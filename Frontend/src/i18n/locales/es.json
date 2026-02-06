@@ -52,7 +52,9 @@
     "tip": "💡 Escanea este código con cualquier lector QR para verificar que funciona correctamente",
     "placeholder": "Código QR",
     "placeholderText": "Aparecerá aquí",
-    "instructions": "Configura las opciones y presiona \"Generar QR\""
+    "instructions": "Configura las opciones y presiona \"Generar QR\"",
+    "supportCta": "¿Te sirvió? Apóyame",
+    "viewDonations": "Ver opciones de donación"
   },
   "sections": {
     "whatIsQR": {
@@ -114,6 +116,7 @@
     "unlimited": "Sin límites de uso",
     "madeBy": "Hecho por",
     "about": "Acerca de",
+    "donations": "Donaciones",
     "faq": "Preguntas Frecuentes",
     "terms": "Términos y Condiciones",
     "privacy": "Política de Privacidad",
@@ -288,6 +291,32 @@
       "title": "Código Abierto",
       "content": "Este proyecto es de código abierto y está disponible en GitHub. Creemos en la transparencia y en el poder de la colaboración. Si eres desarrollador y quieres contribuir, mejorar o adaptar el código, eres bienvenido a hacerlo."
     }
+  },
+  "donations": {
+    "title": "Apoya este proyecto",
+    "subtitle": "Generador QR gratis y sin anuncios",
+    "notRequired": "No es necesario donar. Ya me apoyan muchísimo usando la app y compartiéndola para que otras personas la usen y les sirva. Si aún así quieres apoyar con una donación, aquí tienes las opciones.",
+    "greeting": "Hola, soy Edu.",
+    "role": "Programador Full stack",
+    "message": "Este generador de códigos QR es gratis y sin anuncios. Si te ha servido, puedes apoyar el proyecto con una donación voluntaria. Si no puedes o no quieres donar, no hay problema: me apoyas igual usando la app y compartiéndola con quien le pueda servir.",
+    "otherAmount": "Otro monto",
+    "methodsTitle": "Métodos de donación",
+    "yapeNumber": "Número Yape (copiar)",
+    "yapePlaceholder": "965 728 013",
+    "plinNumber": "Número Plin (copiar)",
+    "plinPlaceholder": "965 728 013",
+    "paypalLink": "https://paypal.me/EduArmas?locale.x=es_XC&country.x=PE",
+    "paypalCta": "Donar con PayPal",
+    "binanceWallet": "Wallet USDT (BEP20 o red que prefieras)",
+    "binancePlaceholder": "0x...",
+    "binancePayHint": "Escanea el QR con Binance Pay para donar",
+    "binancePayIdLabel": "Si no puedes escanear, usa mi ID:",
+    "transparencyTitle": "¿En qué se usa tu apoyo?",
+    "transparency1": "Dominio y hosting para mantener la app online",
+    "transparency2": "Mejoras y nuevas funciones",
+    "transparency3": "Mantener el proyecto sin anuncios ni paywall",
+    "thanks": "Gracias por apoyar y probar la app espero pueda compartirla con quien le pueda servir",
+    "backToGenerator": "Volver al generador"
   }
 }
 

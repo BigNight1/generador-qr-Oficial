@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { Code2, Download, CheckCircle2, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Code2, Download, CheckCircle2, Sparkles, Heart } from "lucide-react";
 import type { UseQRGeneratorReturn } from "../../hooks/useQRGenerator";
 
 interface QRDisplayProps {
@@ -67,6 +68,20 @@ export const QRDisplay = ({ qrGenerator }: QRDisplayProps) => {
             <Download className="h-4 w-4 sm:h-5 sm:w-5 group-hover:animate-bounce" />
             <span>{t("qr.download")}</span>
           </button>
+
+          {/* Apoyo / Donaciones */}
+          <div className="mt-6 w-full max-w-xs rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4 text-center">
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center justify-center gap-1.5">
+              <Heart className="h-4 w-4 text-purple-500" />
+              {t("qr.supportCta")}
+            </p>
+            <Link
+              to="/donaciones"
+              className="inline-flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400 hover:underline font-medium"
+            >
+              {t("qr.viewDonations")}
+            </Link>
+          </div>
 
           {/* Tip adicional */}
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-4 text-center max-w-xs">
