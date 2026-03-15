@@ -1,9 +1,50 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { Link, MessageCircle, Image as ImageIcon, Wifi, Eye, EyeOff, FileText } from "lucide-react";
+import {
+  Link,
+  MessageCircle,
+  Image as ImageIcon,
+  Wifi,
+  Eye,
+  EyeOff,
+  FileText,
+} from "lucide-react";
+import {
+  PhoneInput,
+  defaultCountries,
+  parseCountry,
+} from "react-international-phone";
 import { QR_CONFIG } from "../../constants";
 import type { UseQRGeneratorReturn } from "../../hooks/useQRGenerator";
 import type { WiFiSecurity } from "../../types";
+
+const LATAM_ISO2_CODES = [
+  "pe", // Perú
+  "mx", // México
+  "ar", // Argentina
+  "br", // Brasil
+  "cl", // Chile
+  "co", // Colombia
+  "ve", // Venezuela
+  "uy", // Uruguay
+  "py", // Paraguay
+  "bo", // Bolivia
+  "ec", // Ecuador
+  "cr", // Costa Rica
+  "pa", // Panamá
+  "ni", // Nicaragua
+  "sv", // El Salvador
+  "gt", // Guatemala
+  "hn", // Honduras
+  "do", // República Dominicana
+  "pr", // Puerto Rico
+  "cu", // Cuba
+] as const;
+
+const LATAM_COUNTRIES = defaultCountries.filter((country) => {
+  const { iso2 } = parseCountry(country);
+  return LATAM_ISO2_CODES.includes(iso2 as (typeof LATAM_ISO2_CODES)[number]);
+});
 
 interface QRFormProps {
   qrGenerator: UseQRGeneratorReturn;
@@ -15,6 +56,8 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
   const {
     url,
     setUrl,
+    whatsappPhone,
+    setWhatsappPhone,
     whatsappMessage,
     setWhatsappMessage,
     wifiSSID,
@@ -49,7 +92,13 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
         {/* Tipo de QR */}
         <div className="flex flex-wrap gap-2 sm:gap-4 mb-4">
           <button
-            onClick={() => setType("url")}
+            onClick={() => {
+              // Al volver a URL desde WhatsApp limpiamos solo el teléfono de WhatsApp
+              if (type === "whatsapp") {
+                setWhatsappPhone("");
+              }
+              setType("url");
+            }}
             className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-md text-sm sm:text-base flex-1 sm:flex-none justify-center ${
               type === "url"
                 ? "bg-blue-600 text-white"
@@ -150,7 +199,11 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none"
-                    aria-label={showPassword ? t("form.hidePassword") : t("form.showPassword")}
+                    aria-label={
+                      showPassword
+                        ? t("form.hidePassword")
+                        : t("form.showPassword")
+                    }
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -166,7 +219,9 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
                 </label>
                 <select
                   value={wifiSecurity}
-                  onChange={(e) => setWifiSecurity(e.target.value as WiFiSecurity)}
+                  onChange={(e) =>
+                    setWifiSecurity(e.target.value as WiFiSecurity)
+                  }
                   className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 sm:p-2.5 text-sm sm:text-base border"
                 >
                   <option value="WPA">WPA/WPA2</option>
@@ -198,24 +253,35 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
             </label>
             <div className="flex gap-2">
               <div className="relative flex-1">
-                {type === "url" ? (
+                {/* Input URL (siempre montado, solo visible en tipo URL) */}
+                <div className={type === "url" ? "block" : "hidden"}>
                   <Link className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-4 w-4 sm:h-5 sm:w-5 z-10 pointer-events-none" />
-                ) : (
-                  <MessageCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-4 w-4 sm:h-5 sm:w-5 z-10 pointer-events-none" />
-                )}
-                <input
-                  type={type === "url" ? "url" : "tel"}
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder={
-                    type === "url" ? t("form.urlPlaceholder") : t("form.whatsappPlaceholder")
-                  }
-                  className="pl-9 sm:pl-10 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 sm:p-2.5 text-sm sm:text-base border relative"
-                  style={{
-                    isolation: "isolate",
-                    contain: "layout style paint",
-                  }}
-                />
+                  <input
+                    type="url"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    placeholder={t("form.urlPlaceholder")}
+                    className="pl-9 sm:pl-10 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 sm:p-2.5 text-sm sm:text-base border relative"
+                    style={{
+                      isolation: "isolate",
+                      contain: "layout style paint",
+                    }}
+                  />
+                </div>
+
+                {/* Input WhatsApp (PhoneInput, siempre montado, solo visible en tipo WhatsApp) */}
+                <div className={type === "whatsapp" ? "block" : "hidden"}>
+                  <div className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 px-2 py-1">
+                    <PhoneInput
+                      defaultCountry="pe"
+                      countries={LATAM_COUNTRIES}
+                      value={whatsappPhone}
+                      onChange={(phone) => setWhatsappPhone(phone)}
+                      placeholder={t("form.whatsappPlaceholder")}
+                      inputClassName="!w-full !bg-transparent !text-gray-900 dark:!text-white !border-0 !shadow-none !text-sm sm:!text-base focus:!ring-0 focus:!outline-none"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -272,11 +338,15 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
             />
           </div>
           <div className="flex justify-between items-center mt-3">
-            <span className="text-xs text-gray-500 dark:text-gray-400">{t("form.lowQuality")}</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {t("form.lowQuality")}
+            </span>
             <span className="text-sm font-semibold text-gray-900 dark:text-white">
               {qrSize} x {qrSize} Px
             </span>
-            <span className="text-xs text-gray-500 dark:text-gray-400">{t("form.highQuality")}</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {t("form.highQuality")}
+            </span>
           </div>
         </div>
 
@@ -385,7 +455,9 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
           </label>
           <select
             value={outputFormat}
-            onChange={(e) => setOutputFormat(e.target.value as "jpg" | "png" | "pdf" | "svg")}
+            onChange={(e) =>
+              setOutputFormat(e.target.value as "jpg" | "png" | "pdf" | "svg")
+            }
             className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 sm:p-2.5 text-sm sm:text-base border"
             style={{
               isolation: "isolate",
@@ -407,12 +479,12 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
               loading
                 ? "bg-gray-400"
                 : type === "url"
-                ? "bg-blue-600 hover:bg-blue-700"
-                : type === "whatsapp"
-                ? "bg-green-600 hover:bg-green-700"
-                : type === "wifi"
-                ? "bg-purple-600 hover:bg-purple-700"
-                : "bg-orange-600 hover:bg-orange-700"
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : type === "whatsapp"
+                    ? "bg-green-600 hover:bg-green-700"
+                    : type === "wifi"
+                      ? "bg-purple-600 hover:bg-purple-700"
+                      : "bg-orange-600 hover:bg-orange-700"
             } text-white rounded-md transition-colors disabled:cursor-not-allowed`}
           >
             {loading ? t("form.generating") : t("form.generateButton")}
@@ -422,4 +494,3 @@ export const QRForm = ({ qrGenerator }: QRFormProps) => {
     </div>
   );
 };
-

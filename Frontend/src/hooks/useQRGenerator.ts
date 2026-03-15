@@ -11,6 +11,8 @@ export interface UseQRGeneratorReturn {
   // Form state
   url: string;
   setUrl: (url: string) => void;
+  whatsappPhone: string;
+  setWhatsappPhone: (phone: string) => void;
   whatsappMessage: string;
   setWhatsappMessage: (message: string) => void;
   wifiSSID: string;
@@ -52,6 +54,7 @@ export interface UseQRGeneratorReturn {
 export const useQRGenerator = (): UseQRGeneratorReturn => {
   const { t } = useTranslation();
   const [url, setUrl] = useState<string>("");
+  const [whatsappPhone, setWhatsappPhone] = useState<string>("");
   const [whatsappMessage, setWhatsappMessage] = useState<string>("");
   const [wifiSSID, setWifiSSID] = useState<string>("");
   const [wifiPassword, setWifiPassword] = useState<string>("");
@@ -89,6 +92,8 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
   };
 
   const generateQRCode = async () => {
+    const targetUrlOrPhone = type === "whatsapp" ? whatsappPhone : url;
+
     if (type === "wifi") {
       if (!wifiSSID) {
         alert(t("errors.wifiSSIDRequired"));
@@ -100,7 +105,7 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
         return;
       }
     } else {
-      if (!url) {
+      if (!targetUrlOrPhone) {
         alert(t("errors.urlRequired"));
         return;
       }
@@ -116,7 +121,7 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
     try {
       const finalUrl = generateFinalUrl(
         type,
-        url,
+        targetUrlOrPhone,
         whatsappMessage,
         type === "wifi"
           ? {
@@ -173,6 +178,8 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
   return {
     url,
     setUrl,
+    whatsappPhone,
+    setWhatsappPhone,
     whatsappMessage,
     setWhatsappMessage,
     wifiSSID,
