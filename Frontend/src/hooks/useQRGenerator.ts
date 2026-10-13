@@ -7,6 +7,7 @@ import { downloadQr, generateQr, type QrResult } from "../lib/qr";
 import { fileToBase64, isValidImageFile, isValidFileSize } from "../utils/fileUtils";
 import { generateFinalUrl } from "../utils/qrUtils";
 import { saveQRToHistory } from "../utils/historyUtils";
+import { createQrGenerationGuard } from "../utils/qrGenerationGuard";
 
 export interface UseQRGeneratorReturn {
   // Form state
@@ -93,13 +94,72 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
   const [loading, setLoading] = useState<boolean>(false);
   // Latest generated code: downloads re-render it in whichever format is selected.
   const lastResult = useRef<QrResult | null>(null);
+  const generationGuard = useRef(createQrGenerationGuard());
+
+  const invalidateQrResult = () => {
+    generationGuard.current.invalidate();
+    setQrCodeImage("");
+    lastResult.current = null;
+    setLoading(false);
+  };
+
+  const updateUrl = (value: string) => {
+    invalidateQrResult();
+    setUrl(value);
+  };
+  const updateWhatsappPhone = (value: string) => {
+    invalidateQrResult();
+    setWhatsappPhone(value);
+  };
+  const updateWhatsappMessage = (value: string) => {
+    invalidateQrResult();
+    setWhatsappMessage(value);
+  };
+  const updateWifiSSID = (value: string) => {
+    invalidateQrResult();
+    setWifiSSID(value);
+  };
+  const updateWifiPassword = (value: string) => {
+    invalidateQrResult();
+    setWifiPassword(value);
+  };
+  const updateWifiSecurity = (value: WiFiSecurity) => {
+    invalidateQrResult();
+    setWifiSecurity(value);
+  };
+  const updateWifiHidden = (value: boolean) => {
+    invalidateQrResult();
+    setWifiHidden(value);
+  };
+  const updateTextContent = (value: string) => {
+    invalidateQrResult();
+    setTextContent(value);
+  };
+  const updateQrSize = (value: number) => {
+    invalidateQrResult();
+    setQrSize(value);
+  };
+  const updateEnableLogo = (value: boolean) => {
+    invalidateQrResult();
+    setEnableLogo(value);
+  };
+  const updateLogoFile = (value: File | null) => {
+    invalidateQrResult();
+    setLogoFile(value);
+  };
+  const updateQrColor = (value: string) => {
+    invalidateQrResult();
+    setQrColor(value);
+  };
 
   const setType = (next: QRType) => {
+    invalidateQrResult();
     setTypeState(next);
     setFieldErrors({});
   };
 
   const setFieldValue = (typeId: string, name: string, value: string) => {
+    invalidateQrResult();
     setFieldValues((previous) => ({ ...previous, [typeId]: { ...previous[typeId], [name]: value } }));
     setFieldErrors((previous) => {
       if (!(name in previous)) return previous;
@@ -123,6 +183,7 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
       return;
     }
 
+    invalidateQrResult();
     setLogoFile(file);
     const base64 = await fileToBase64(file);
     setLogoPreview(base64);
@@ -167,6 +228,9 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
       return;
     }
 
+    const generation = generationGuard.current.begin();
+    setQrCodeImage("");
+    lastResult.current = null;
     setLoading(true);
 
     try {
@@ -196,6 +260,8 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
         format: outputFormat,
       });
 
+      if (!generationGuard.current.isCurrent(generation)) return;
+
       lastResult.current = result;
       setQrCodeImage(result.previewDataUrl);
       setSelectedSize(result.sizePx);
@@ -207,11 +273,12 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
         alert(t("errors.logoFailed"));
       }
     } catch (error) {
+      if (!generationGuard.current.isCurrent(generation)) return;
       console.error("Error al generar el QR:", error);
       const tooLong = error instanceof Error && /too big|cannot contain/i.test(error.message);
       alert(t(tooLong ? "errors.contentTooLong" : "errors.generateError"));
     } finally {
-      setLoading(false);
+      if (generationGuard.current.isCurrent(generation)) setLoading(false);
     }
   };
 
@@ -227,38 +294,38 @@ export const useQRGenerator = (): UseQRGeneratorReturn => {
 
   return {
     url,
-    setUrl,
+    setUrl: updateUrl,
     whatsappPhone,
-    setWhatsappPhone,
+    setWhatsappPhone: updateWhatsappPhone,
     whatsappMessage,
-    setWhatsappMessage,
+    setWhatsappMessage: updateWhatsappMessage,
     wifiSSID,
-    setWifiSSID,
+    setWifiSSID: updateWifiSSID,
     wifiPassword,
-    setWifiPassword,
+    setWifiPassword: updateWifiPassword,
     wifiSecurity,
-    setWifiSecurity,
+    setWifiSecurity: updateWifiSecurity,
     wifiHidden,
-    setWifiHidden,
+    setWifiHidden: updateWifiHidden,
     textContent,
-    setTextContent,
+    setTextContent: updateTextContent,
     fieldValues,
     setFieldValue,
     fieldErrors,
     type,
     setType,
     qrSize,
-    setQrSize,
+    setQrSize: updateQrSize,
     enableLogo,
-    setEnableLogo,
+    setEnableLogo: updateEnableLogo,
     logoFile,
-    setLogoFile,
+    setLogoFile: updateLogoFile,
     logoPreview,
     setLogoPreview,
     outputFormat,
     setOutputFormat,
     qrColor,
-    setQrColor,
+    setQrColor: updateQrColor,
     qrCodeImage,
     selectedSize,
     loading,
